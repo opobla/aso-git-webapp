@@ -6,13 +6,17 @@
 </head
 <body>
     <h1>
-        Hola Mundo v2!
+	    Hola Mundo v{{version}}!
     </h1>
     <p>
         Hola {{user.username}}, bienvenido/a.
     </p>
     <p style="border: 1px solid black">
-    	<i class="fas fa-users" style="padding: 1em"></i>{{num_visitas}}
+	{% if num_visitas %}
+	    <i class="fas fa-users" style="padding: 1em"></i>{{num_visitas}}
+	{% else %}
+	    <i class="fas fa-users" style="padding: 1em"></i>Redis no disponible
+	{% endif %}
     	<i class="fas fa-desktop" style="padding: 1em"></i>{{hostname}}
     </p>
 </body>
