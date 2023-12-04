@@ -1,15 +1,17 @@
 import flask
 import socket
 import os
-
+import redis
 
 APP = flask.Flask(__name__)
-num_visitas = 0
 
 @APP.route('/')
 def index():
-    global num_visitas 
-    num_visitas = num_visitas + 1
+
+    r = redis.Redis(host=REDISHOST, port=REDISPORT, decode_responses=True)
+
+    num_visitas = r.incr("contrador_visitas")
+
     hostname = socket.gethostname()
     userinfo = {
         'username': os.environ['CLIENT_NAME']
@@ -22,5 +24,7 @@ def index():
 
 if __name__ == '__main__':
     PORT=os.environ['PORT']
+    REDISPORT=os.environ['REDISPORT']
+    REDISHOST=os.environ['REDISHOST']
     APP.debug = True
     APP.run(host='0.0.0.0', port=PORT)
